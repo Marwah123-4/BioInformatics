@@ -1,0 +1,45 @@
+```{r}
+#install.packages("ape")
+
+#if (!require("BiocManager", quietly = TRUE))
+    #install.packages("BiocManager")
+
+#BiocManager::install("treeio")
+
+#if (!require("BiocManager", quietly = TRUE))
+    #install.packages("BiocManager")
+
+#BiocManager::install("ggtree")
+
+#if (!require("BiocManager", quietly = TRUE))
+    #install.packages("BiocManager")
+
+#BiocManager::install("SGSeq")
+```
+
+```{r}
+library(rbioinfcookbook)
+library(SGSeq)
+library(ape)
+library(treeio)
+library(ggplot2)
+library(ggtree)
+```
+
+```{r}
+newick_file_path <- fs::path_package("extdata", "mammal_tree.nwk", package = "rbioinfcookbook" )
+
+nexus_file_path <- fs::path_package("extdata", "mammal_tree.nexus", package = "rbioinfcookbook")
+
+newick <- ape::read.tree(newick_file_path)
+nexus <- ape::read.nexus(nexus_file_path)
+```
+
+```{r}
+beast_file_path <- fs::path_package("extdata", "beast_mcc.tree", package = "rbioinfcookbook")
+
+raxml_file_path <- fs::path_package("extdata", "RAxML_bipartitionsBranchLabels.H3", package = "rbioinfcookbook")
+
+beast <- read.beast(beast_file_path)
+raxml <- read.raxml(raxml_file_path)
+```

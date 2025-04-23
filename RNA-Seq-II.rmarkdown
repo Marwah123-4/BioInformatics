@@ -1,0 +1,77 @@
+```{r}
+#if (!require("BiocManager", quietly = TRUE))
+    #install.packages("BiocManager")
+
+#BiocManager::install("ComplexHeatmap")
+```
+
+```{r}
+#install.packages("viridisLite")
+#install.packages("stringr")
+#install.packages("RColorBrewer")
+#install.packages("circlize")
+```
+
+```{r}
+library(ComplexHeatmap)
+library(viridisLite)
+library(stringr)
+library(RColorBrewer)
+library(circlize)
+library(rbioinfcookbook)
+```
+
+```{r}
+mat <- log(as.matrix(at_tf_gex[ , 5:55]))
+ecotype <- stringr::str_split(colnames(mat), ",", simplify = TRUE)[,1]
+part <- stringr::str_split(colnames(mat), ",", simplify = TRUE)[,2]
+```
+
+
+
+This code talks about stringer which is used to identify, locate, extract, match, replace, and split of pattern matching functions.
+
+
+
+```{r}
+data_col_func <- circlize::colorRamp2(seq(0, max(mat), length.out = 6), viridisLite::magma(6))
+
+ecotype_colors <- c(RColorBrewer::brewer.pal(12, "Set3"), RColorBrewer::brewer.pal(5, "Set1"))
+names(ecotype_colors) <- unique(ecotype)
+
+part_colors <- RColorBrewer::brewer.pal(3, "Accent")
+names(part_colors) <- unique(part)
+```
+
+
+
+This data explains two different cods which are circlize and viridisLite. What circlize does that it create circular visualizations that could help with large datasets, and viridisLite helps with the color palettes to improve readability.
+
+
+
+```{r}
+top_annot <- HeatmapAnnotation("Ecotype" = ecotype, "Plant Part" = part, col = list("Ecotype" = ecotype_colors, "Plant Part" = part_colors), annotation_name_side = "left")
+
+side_annot <- rowAnnotation(length = anno_points(at_tf_gex$Length, pch = 16, size = unit(1, "mm"), axis_param = list(at = seq(1, max(at_tf_gex$Length), length.out = 4)),))
+```
+
+
+
+Each of the various cods in this data has a specific function. top_annot, which aids in providing us with details about plant sections and ecotype. Annotation_name_side will assist in placing the annotation to the left of the color it represents. Side_annot will assist in adding annotation to the rows. anno_points(), will assist in determining the location of the points that need to be plotted. As for Size, axis_param, and pch will aid in determining the point's location, size, and shape.
+
+
+
+```{r}
+ht_1 <- Heatmap(mat, name="log(TPM)", row_km = 6, col = data_col_func, top_annotation = top_annot, right_annotation = side_annot, cluster_columns = TRUE, column_split = ecotype, show_column_names = FALSE, column_title = " ")
+
+ComplexHeatmap::draw(ht_1)
+```
+
+
+
+Heatmap() has helped to show us the different colors in the graph of the ecotypeplant parts. This data has uses different cods like row_km which is used to set the number of clusters for the rows. cluster_columns which is set to TRUE, causing the heatmap's columns to group according to how comparable their gene expression is. column_split which is set up to ecotype, which arranges the columns according to ecotype. show_column_names hides column name to make the heat map look less clustered.
+
+## **Summary**
+
+This assignment helps students discover the gene expression patterns among Arabidopsis thaliana plant sections and ecotypes by visualizing the RNA-seq data using heat maps, which come in a variety of colors. I don't currently have any questions, but I will get in touch if I do.
+
